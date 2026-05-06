@@ -42,7 +42,7 @@ Because missed failures (false negatives) are far more costly than unnecessary i
 -   Categorical feature – Machine type L is most frequent but failure rates are proportionally similar across types.  
 
 ### Methodology
-**<u>Preprocessing</u>**
+**<u>Preprocessing</u>**  
 **Dropped:** Non‑predictive columns (UDI, Product ID, failure‑mode indicators).
 
 **Feature Engineering:** Created Temp_Difference (Process – Air) and Mechanical_Power (Torque × Rotational Speed) to better capture mechanical and thermal stress.
@@ -53,10 +53,10 @@ Because missed failures (false negatives) are far more costly than unnecessary i
 
 **Train‑Test Split:** 70% training / 30% test with a fixed random state (73) to ensure reproducibility.
 
-**<u>Modeling Approach</u>**
+**<u>Modeling Approach</u>**  
 **Baseline Models:** Unregularized Logistic Regression, and a Decision Tree (default parameters, using entropy for splits). Both trained on the SMOTE‑balanced training set.
 
-**Optimization:**
+**Optimization:**  
 
 **I. Logistic Regression:** tuned regularization strength (C) and the classification threshold to improve precision/recall balance.
 
@@ -65,7 +65,7 @@ Because missed failures (false negatives) are far more costly than unnecessary i
 **Evaluation:** Confusion matrices, accuracy, precision, recall, F1‑score, and 5‑fold cross‑validation.
 
 ### Key Findings
-**Feature Importance**
+**Feature Importance**  
 Rotational Speed, Mechanical Power, and Tool Wear consistently emerged as the strongest predictors of machine failure.  
 Temperature variables and Machine Type contributed less, indicating that mechanical load and cumulative wear are the primary failure drivers.
 
