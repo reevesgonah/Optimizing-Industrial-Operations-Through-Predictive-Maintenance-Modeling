@@ -1,9 +1,10 @@
 # Predictive Maintenance for Machine Failure Detection
 ## Optimizing Industrial Operations Through Predictive Maintenance Modeling
 
-**Author:** Reeves Gonah
-**Date** May 5, 2026
+**Author:** Reeves Gonah  
+**Date** May 5, 2026  
 **Data Source:** [AI4I 2020 Predictive Maintenance Dataset](https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020) 
+___
 
 ### Overview
 This project builds a classification model to predict whether an industrial machine is in a failure‑prone state based on real‑time sensor data. The goal is to shift maintenance operations from reactive (fix‑when‑broken) or rigid scheduled maintenance to a data‑driven predictive maintenance strategy, reducing unplanned downtime and repair costs.
@@ -24,14 +25,23 @@ Use predictions to trigger inspections only when risk is elevated, thereby reduc
 **Success Criteria**
 Because missed failures (false negatives) are far more costly than unnecessary inspections (false positives), recall is the primary metric (target ≥ 70–75%). Precision must remain above roughly 50% to ensure alerts are actionable. The F1‑score is used for overall model comparison.
 
-### Dataset & Methodology
-**<u>Data</u>**
+### Data Understanding
+
 **Source:** AI4I 2020 Predictive Maintenance Dataset (10,000 synthetic observations of a milling machine).
 
 **Features:** Air & Process Temperature, Rotational Speed, Torque, Tool Wear, Machine Type (categorical), and a binary target Machine failure.
 
-**Class Imbalance:** Only ~3.4% of records represent failures, addressed using SMOTE oversampling.
+**Data Cleaning:** Dropped non‑predictive columns and renamed columns for clarity. No missing or duplicate values; all data types are correct.
 
+**EDA:**
+-   Target imbalance – Only 3.4% of machines failed.  
+-   Feature scales differ greatly – Temperatures span a few Kelvin, while rotational speed and torque cover hundreds of units.  
+-   Skewness/outliers – Rotational speed and torque have long right tails; extreme values appear more often in failed machines.  
+-   Box plots – Failed machines tend to operate at higher torque and greater tool wear.  
+-   Correlations – Torque and rotational speed are strongly negatively correlated (-0.88). Air and process temperatures are highly correlated (0.88). Torque (+0.19) and tool wear (+0.11) show the strongest linear links to failure.  
+-   Categorical feature – Machine type L is most frequent but failure rates are proportionally similar across types.  
+
+### Methodology
 **<u>Preprocessing</u>**
 **Dropped:** Non‑predictive columns (UDI, Product ID, failure‑mode indicators).
 
@@ -48,9 +58,9 @@ Because missed failures (false negatives) are far more costly than unnecessary i
 
 **Optimization:**
 
-**Logistic Regression:** tuned regularization strength (C) and the classification threshold to improve precision/recall balance.
+**I. Logistic Regression:** tuned regularization strength (C) and the classification threshold to improve precision/recall balance.
 
-**Decision Tree:** hyperparameters (max_depth, min_samples_split, min_samples_leaf) optimized via grid search with 5‑fold cross‑validation.
+**II. Decision Tree:** hyperparameters (max_depth, min_samples_split, min_samples_leaf) optimized via grid search with 5‑fold cross‑validation.
 
 **Evaluation:** Confusion matrices, accuracy, precision, recall, F1‑score, and 5‑fold cross‑validation.
 
@@ -87,17 +97,18 @@ Set an alert threshold such that maintenance teams are notified when the model p
 Focus monitoring on machines with high tool wear and abnormal power or speed readings, as these conditions most strongly correlate with impending failures.
 Integrate with existing CMMS/SCADA systems to automate data ingestion and alert routing.
 
-##### Limitations & Assumptions
+**Limitations & Assumptions**  
 The data is synthetic and may not capture all real‑world failure patterns.  
 SMOTE was used to balance classes; while it helps training, it may slightly distort the natural failure distribution.  
 The model does not consider temporal trends – it predicts failure risk from a single observation rather than time‑based patterns.  
 Cross‑validation was performed on the original (pre‑SMOTE) training set to avoid data leakage.
 
-##### Future Improvements
+**Future Improvements**  
 Incorporate time‑series features (e.g., rate of change in tool wear) to capture degradation trends.  
 Explore ensemble methods (Random Forest, XGBoost) that often handle imbalance better and provide more interpretable feature importance.  
 Implement cost‑sensitive learning to directly optimize the cost trade‑off between false alarms and missed failures.  
 Validate the model on real‑world data before full production deployment.
+___
 
 ##### Repository Structure
 index.ipynb – Full Jupyter Notebook containing all analysis, modeling, and visualisations.
